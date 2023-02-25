@@ -5,7 +5,8 @@ on : [push]
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    env:
+      DJANGO_SETTINGS_MODULE: toogoodtogo.settings.development
     services:
       postgres:
         image: postgres:15.2-alpine
