@@ -4,7 +4,7 @@ from datetime import date, datetime
 from stock_keeping.models import Shop, StockReading
 
 
-class BiteTest(APITestCase):
+class StockReadingTest(APITestCase):
     def test_stock_read_list_get(self):
         StockReading.objects.create(GTIN='YOP CHOCO', expiry='2022-03-26', occurrence='2022-02-23 12:00:01Z')
         StockReading.objects.create(GTIN='MADELEINE', expiry='2022-03-24', occurrence='2022-02-23 12:00:01Z')
