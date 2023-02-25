@@ -13,3 +13,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DATABASES = {
     'default': dj_database_url.config()
 }
+
+STATIC_ROOT = BASE_DIR / 'static'
+
+MIDDLEWARE.insert(1, 'whitenoise.middleware.WhiteNoiseMiddleware')
