@@ -8,6 +8,6 @@ from stock_keeping.models import Profile
 @receiver(post_save, sender=User, dispatch_uid='save_new_user_profile')
 def save_profile(sender, instance, created, **kwargs):
     user = instance
-    if created:
+    if created and not hasattr(user, 'profile'):
         profile = Profile(user=user)
         profile.save()
