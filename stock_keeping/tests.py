@@ -1,13 +1,26 @@
-from rest_framework.test import APITestCase
 from datetime import date, datetime
 
-from stock_keeping.models import Shop, StockReading
+from django.contrib.auth.models import User
+from rest_framework.test import APITestCase
+
+from stock_keeping.models import Shop, StockReading, Profile
 
 
 class StockReadingTest(APITestCase):
-    def test_stock_read_list_get(self):
-        StockReading.objects.create(GTIN='YOP CHOCO', expiry='2022-03-26', occurrence='2022-02-23 12:00:01Z')
-        StockReading.objects.create(GTIN='MADELEINE', expiry='2022-03-24', occurrence='2022-02-23 12:00:01Z')
+    def setUp(self):
+        self.shop = Shop.objects.create(name='A2Pas Nation')
+
+        # I wish we could do it in one line, but I have no idea how to do it elegantly
+        self.user = User.objects.create_user('john', password='passoire')
+        self.user.profile.shop = self.shop
+
+        self.client.force_authenticate(user=self.user)
+
+    def test_stock_read_get_list(self):
+        StockReading.objects.create(GTIN='YOP CHOCO', expiry='2022-03-26', occurrence='2022-02-23 12:00:01Z',
+                                    shop=self.shop)
+        StockReading.objects.create(GTIN='MADELEINE', expiry='2022-03-24', occurrence='2022-02-23 12:00:01Z',
+                                    shop=self.shop)
 
         resp = self.client.get('/api/stock_keeping/')
         self.assertEqual(resp.status_code, 200)
@@ -16,7 +29,7 @@ class StockReadingTest(APITestCase):
         {'GTIN': 'YOP CHOCO', 'expiry': '2022-03-26', 'occurrence': '2022-02-23T12:00:01Z'},
         ])
 
-    def test_stock_read_list_post(self):
+    def test_stock_read_post(self):
         data = {'GTIN': 'YOP CHOCO', 'expiry': '2022-03-27', 'occurrence': '2022-02-23 12:55:12Z'}
         resp = self.client.post('/api/stock_keeping/', data)
         self.assertEqual(resp.status_code, 201)
@@ -34,7 +47,7 @@ class StockReadingTest(APITestCase):
         self.assertEqual(resp.status_code, 201)
         self.assertEqual(StockReading.objects.count(), 2)
 
-    def test_conflicting_stock_read_post(self):
+    def test_stock_read_conflicting_batch_post(self):
         resp1 = self.client.post('/api/stock_keeping/batch/', [
             {'GTIN': 'MADELEINE', 'expiry': '2022-03-01', 'occurrence': '2022-02-23 12:00:00Z'},
             {'GTIN': 'YOP CHOCO', 'expiry': '2022-03-01', 'occurrence': '2022-02-23 12:00:00Z'},
