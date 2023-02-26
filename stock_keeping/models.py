@@ -6,9 +6,14 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     shop = models.ForeignKey('Shop', on_delete=models.CASCADE, null=True)
 
+    def __str__(self):
+        return f"{self.user.username} - {self.shop}"
 
 class Shop(models.Model):
     name = models.CharField(max_length=255, null=False, blank=False)
+
+    def __str__(self):
+        return self.name[:50]
 
 
 class StockReading(models.Model):
@@ -19,3 +24,5 @@ class StockReading(models.Model):
     expiry = models.DateField()
     occurrence = models.DateTimeField()
 
+    def __str__(self):
+        return f"{self.GTIN}: {self.expiry} [{self.occurrence}]"
