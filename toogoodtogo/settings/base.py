@@ -31,7 +31,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # packages
-    'django_extensions',
     'rest_framework',
     # us
     'stock_keeping',

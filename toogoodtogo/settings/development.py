@@ -15,6 +15,10 @@ DATABASES = {
     }
 }
 
+INSTALLED_APPS += [
+    'django_extensions',
+]
+
 REST_FRAMEWORK = {
     'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
