@@ -1,0 +1,34 @@
+services:
+  frontend:
+    container_name: toogoodtogo
+    build: .
+    image: toogoodtogo:latest
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    environment:
+      - DJANGO_SETTINGS_MODULE=toogoodtogo.settings.production
+      - DATABASE_URL=postgres://postgres:password@db:5432/toogoodtogo
+      - ALLOWED_HOSTS=localhost
+      - SECRET_KEY='a not so secret key'
+    command: gunicorn toogoodtogo.wsgi:application --bind 0.0.0.0:8000
+
+  db:
+    image: postgres:15-alpine
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=toogoodtogo
+
+  django-migrate:
+    image: toogoodtogo:latest
+    command: python manage.py migrate
+    environment:
+      - DATABASE_URL=postgres://postgres:password@db:5432/toogoodtogo
+      - DJANGO_SETTINGS_MODULE=toogoodtogo.settings.production
+    depends_on:
+      - db
+    restart: never
