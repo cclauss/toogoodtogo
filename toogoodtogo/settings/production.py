@@ -8,7 +8,7 @@ DEBUG = False
 
 ALLOWED_HOSTS = os.environ['RENDER_EXTERNAL_HOSTNAME'].split(',')
 
-SECRET_KEY = os.environ.get('SECRET_KEY')
+SECRET_KEY = os.environ['SECRET_KEY']
 
 DATABASES = {
     'default': dj_database_url.config()
