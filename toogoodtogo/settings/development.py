@@ -2,7 +2,7 @@ from .base import *
 
 DEBUG = True
 
-SECRET_KEY = 'an absolutely not secrey key'
+SECRET_KEY = 'an absolutely not secret key'
 
 DATABASES = {
     'default': {
