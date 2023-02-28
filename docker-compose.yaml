@@ -21,6 +21,8 @@ services:
     environment:
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=too_good_to_go
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -t 0"]
 
   django-migrate:
     image: toogoodtogo:latest
