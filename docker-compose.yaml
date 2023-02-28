@@ -30,4 +30,4 @@ services:
       - DJANGO_SETTINGS_MODULE=toogoodtogo.settings.production
     depends_on:
       - db
-    restart: never
+    restart: "no"
