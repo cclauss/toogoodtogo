@@ -26,4 +26,7 @@ COPY . /code
 # Collect static files
 RUN poetry run python manage.py collectstatic --noinput
 
+RUN addgroup -S toogoodtogo && adduser -D -S -H -G toogoodtogo toogoodtogo
+USER toogoodtogo
+
 CMD ["gunicorn", "toogoodtogo.wsgi:application", "--bind", "0.0.0.0:8000"]
