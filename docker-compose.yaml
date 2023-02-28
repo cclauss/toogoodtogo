@@ -9,7 +9,7 @@ services:
       - db
     environment:
       - DJANGO_SETTINGS_MODULE=toogoodtogo.settings.production
-      - DATABASE_URL=postgres://postgres:password@db:5432/toogoodtogo
+      - DATABASE_URL=postgres://postgres:password@db:5432/too_good_to_go
       - ALLOWED_HOSTS=localhost
       - SECRET_KEY='a not so secret key'
     command: gunicorn toogoodtogo.wsgi:application --bind 0.0.0.0:8000
@@ -26,7 +26,7 @@ services:
     image: toogoodtogo:latest
     command: python manage.py migrate
     environment:
-      - DATABASE_URL=postgres://postgres:password@db:5432/toogoodtogo
+      - DATABASE_URL=postgres://postgres:password@db:5432/too_good_to_go
       - DJANGO_SETTINGS_MODULE=toogoodtogo.settings.production
     depends_on:
       - db
