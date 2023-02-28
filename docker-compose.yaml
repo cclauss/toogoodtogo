@@ -15,13 +15,12 @@ services:
     command: gunicorn toogoodtogo.wsgi:application --bind 0.0.0.0:8000
 
   db:
-    image: postgres:15-alpine
+    image: postgres:15.2-alpine
     ports:
       - 5432:5432
     environment:
-      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=password
-      - POSTGRES_DB=toogoodtogo
+      - POSTGRES_DB=too_good_to_go
 
   django-migrate:
     image: toogoodtogo:latest
