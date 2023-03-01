@@ -25,9 +25,17 @@ class UserAdmin(BaseUserAdmin):
         return instance.profile.shop
 
 
+class StockReadingAdmin(admin.ModelAdmin):
+    list_display = ('GTIN', 'expires_at', 'scanned_at', 'shop', 'get_user')
+
+    @admin.display(description='User')
+    def get_user(self, instance):
+        return instance.shop.profile.user
+
+
 # Re-register UserAdmin
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
-admin.site.register(StockReading)
+admin.site.register(StockReading, StockReadingAdmin)
 admin.site.register(Shop)
