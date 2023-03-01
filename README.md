@@ -6,7 +6,8 @@ API.
 ## Testing the internet deployed version
 
 *too good to go stock reading* is deployed on https://toogoodtogo-r3qg.onrender.com/. The following
-examples will use this domain. Read the below section to deploy it locally.
+examples will use this domain. Superuser credentials to access the admin interface and the API have
+been mailed to the talent recruiter.
 
 ## Deploy locally
 
@@ -14,8 +15,8 @@ examples will use this domain. Read the below section to deploy it locally.
 it will launch a postgres database and a django web server, and a one-off container will run the
 migrations against the database. You will still need to create a superuser to access the admin
 interface. You can do so with the following command: `docker compose exec frontend python manage.py
-createsuperuser`. The email is not needed. Then it's standard django admin interface. You can access
-it at `http://localhost:8000/admin/`.
+createsuperuser`. The email is not needed. Then you can access the service at
+`http://localhost:8000/admin/`.
 
 ## Develop locally
 
@@ -35,15 +36,19 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+## Run tests
+
+The tests are written in unittest-style, so they can be run with both `python manage.py test` and
+`pytest` for a fancier output and more options.
+
 ## Usage/design
 
-You must create a user (doesn't have to be a super user or staff), a shop and associate them
+You must create a user (doesn't have to be a superuser or staff), a shop and associate them
 together. Users and shop have to be created in the admin. Then you are set, and you can make *stock
 readings* API calls. Since the shop is associated with the user, you don't have to specify the shop
 when you create a *stock reading*, the shop is inferred from the current user.
 I intentionally did not create API endpoints for this, I think it's closer to what the real usage
 will look like.
-
 
 ## Play with the API
 
