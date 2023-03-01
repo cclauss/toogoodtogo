@@ -25,8 +25,8 @@ class StockReadingTest(APITestCase):
         resp = self.client.get('/api/stock_reading/')
         self.assertEqual(resp.status_code, 200)
         self.assertJSONEqual(resp.content, [
-        {'GTIN': 'MADELEINE', 'expires_at': '2022-03-24', 'scanned_at': '2022-02-23T12:00:01Z'},
-        {'GTIN': 'YOP CHOCO', 'expires_at': '2022-03-26', 'scanned_at': '2022-02-23T12:00:01Z'},
+            {'GTIN': 'MADELEINE', 'expires_at': '2022-03-24', 'scanned_at': '2022-02-23T12:00:01Z'},
+            {'GTIN': 'YOP CHOCO', 'expires_at': '2022-03-26', 'scanned_at': '2022-02-23T12:00:01Z'},
         ])
 
     def test_stock_read_post(self):
