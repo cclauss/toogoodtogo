@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import os
 
 from pathlib import Path
 
@@ -110,3 +111,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+if os.environ['DJANGO_SETTINGS_MODULE'] == 'toogoodtogo.settings':
+    import sys
+    sys.exit(('you need to explicitly set the settings module you want to use through DJANGO_SETTINGS_MODULE'
+              'e.g: export DJANGO_SETTINGS_MODULE=toogoodtogo.settings.development'))
