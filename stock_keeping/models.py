@@ -4,7 +4,7 @@ from django.db import models
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    shop = models.ForeignKey('Shop', on_delete=models.CASCADE, null=True)
+    shop = models.OneToOneField('Shop', on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.user.username} - {self.shop}"
