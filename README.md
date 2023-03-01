@@ -121,6 +121,8 @@ like DynamoDB or MongoDB and scale at the database-level horizontally infinitely
   on pypi.
 * Once we use proper GTIN, add a `Product` model, with a GTIN and a name. This would allow us to
   still have human-readable names for products and not have to remember the GTIN of each product.
+* add a *date* filtering to the stock reading API, so we don't have to fetch all the stock readings
+  when we sync, we can download only the ones that have been created since the last sync.
 * Create a dedicated `Employee` model, with just an identifier and an access token. All employee do
   not need to be a full-fledged django user with nickname, first name, last name and email address.
   This would ease workload on the database and allow to handle even more load
