@@ -26,4 +26,4 @@ class StockReadingBatchCreate(StockReadingList):
     # to not harm auto-discovery and not confuse user
     @property
     def allowed_methods(self):
-        return ['POST', 'OPTIONS', 'HEAD']
+        return ['POST', 'OPTIONS']
