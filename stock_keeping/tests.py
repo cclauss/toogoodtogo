@@ -1,7 +1,7 @@
 from datetime import date, datetime
 
 from django.contrib.auth.models import User
-from rest_framework.test import APITestCase
+from rest_framework.test import APITestCase, APIClient
 
 from stock_keeping.models import Shop, StockReading, Profile
 
@@ -65,3 +65,35 @@ class StockReadingTest(APITestCase):
             {'GTIN': 'MADELEINE', 'expires_at': '2022-03-03', 'scanned_at': '2022-02-24T14:00:00Z'},
             {'GTIN': 'YOP CHOCO', 'expires_at': '2022-03-03', 'scanned_at': '2022-02-24T14:00:00Z'},
         ])
+
+    def test_stock_read_get_list_multi_user(self):
+        user2 = User.objects.create(username='paul', password='pablo')
+        shop2 = Shop.objects.create(name='Franprix rue Montreuil')
+
+        # I still don't know how to do it in one line
+        user2.profile.shop = shop2
+
+        # create a second API client for user2 (we can't use self.client because it's already authenticated)
+        client2 = APIClient()
+        client2.force_authenticate(user=user2)
+        # just for consistency
+        client1 = self.client
+
+        # create a stock reading as user1
+        data1 = {'GTIN': 'YOP CHOCO', 'expires_at': '2022-03-27', 'scanned_at': '2022-02-23T12:55:12Z'}
+        resp1 = client1.post('/api/stock_reading/', data1)
+        self.assertEqual(resp1.status_code, 201)
+
+        # create a stock reading as user2
+        data2 = {'GTIN': 'COCA ZERO', 'expires_at': '2022-03-27', 'scanned_at': '2022-02-23T12:55:12Z'}
+        resp2 = client2.post('/api/stock_reading/', data2)
+        self.assertEqual(resp2.status_code, 201)
+
+        # check each user can only see their own stock readings
+        resp3 = client1.get('/api/stock_reading/')
+        self.assertEqual(resp3.status_code, 200)
+        self.assertEqual(resp3.json(), [data1])
+
+        resp4 = client2.get('/api/stock_reading/')
+        self.assertEqual(resp4.status_code, 200)
+        self.assertEqual(resp4.json(), [data2])

@@ -1,6 +1,6 @@
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
 
@@ -9,11 +9,13 @@ from .serializers import StockReadingSerializer
 
 
 class StockReadingList(ListCreateAPIView):
-    queryset = StockReading.objects.order_by('GTIN', '-scanned_at').distinct('GTIN')
     serializer_class = StockReadingSerializer
     authentication_classes = [BasicAuthentication]
-    permission_classes = [IsAuthenticatedOrReadOnly]
+    permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        return StockReading.objects.filter(shop=self.request.user.profile.shop)\
+            .order_by('GTIN', '-scanned_at').distinct('GTIN')
 
 class StockReadingBatchCreate(StockReadingList):
     def post(self, request, *args, **kwargs):
