@@ -18,6 +18,11 @@ class ProfileInline(admin.StackedInline):
 # Define a new User admin
 class UserAdmin(BaseUserAdmin):
     inlines = (ProfileInline,)
+    list_display = ('username', 'get_shop', 'is_staff')
+
+    @admin.display(description='Shop')
+    def get_shop(self, instance):
+        return instance.profile.shop
 
 
 # Re-register UserAdmin
