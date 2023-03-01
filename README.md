@@ -35,6 +35,16 @@ python manage.py migrate
 python manage.py runserver
 ```
 
+## Usage/design
+
+You must create a user (doesn't have to be a super user or staff), a shop and associate them
+together. Users and shop have to be created in the admin. Then you are set, and you can make *stock
+readings* API calls. Since the shop is associated with the user, you don't have to specify the shop
+when you create a *stock reading*, the shop is inferred from the current user.
+I intentionally did not create API endpoints for this, I think it's closer to what the real usage
+will look like.
+
+
 ## Play with the API
 
 *stock readings* are associated to a shop. You need to create a shop in the admin interface and
