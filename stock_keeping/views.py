@@ -9,7 +9,7 @@ from .serializers import StockReadingSerializer
 
 
 class StockReadingList(ListCreateAPIView):
-    queryset = StockReading.objects.order_by('GTIN', '-occurrence').distinct('GTIN')
+    queryset = StockReading.objects.order_by('GTIN', '-scanned_at').distinct('GTIN')
     serializer_class = StockReadingSerializer
     authentication_classes = [BasicAuthentication]
     permission_classes = [IsAuthenticatedOrReadOnly]

@@ -6,7 +6,7 @@ from stock_keeping.models import StockReading, Shop
 class StockReadingSerializer(serializers.ModelSerializer):
     class Meta:
         model = StockReading
-        fields = ['GTIN', 'expiry', 'occurrence']
+        fields = ['GTIN', 'expires_at', 'scanned_at']
 
     def create(self, validated_data):
         shop = self.context['request'].user.profile.shop

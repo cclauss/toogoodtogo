@@ -50,8 +50,8 @@ user:
 ```bash
 http POST -a <username>:<password> https://toogoodtogo-r3qg.onrender.com/api/stock-reading/ \
     gtin=1234567890123 \
-    expiry=2023-03-01 \
-    occurrence=2023-02-27T11:32:18Z
+    expires_at=2023-03-01 \
+    scanned_at=2023-02-27T11:32:18Z
 ```
 
 A bulk of stock readings (with conflicting *stock readings*, of course) can be created with the
@@ -62,18 +62,18 @@ http -a <username>:<password> POST https://toogoodtogo-r3qg.onrender.com/api/sto
 [
   {
     "GTIN": "DANETTE VAN",
-    "expiry": "2023-03-01",
-    "occurrence": "2023-02-27T11:32:18Z"
+    "expires_at": "2023-03-01",
+    "scanned_at": "2023-02-27T11:32:18Z"
   },
   {
     "GTIN": "DANETTE VAN",
-    "expiry": "2023-03-04",
-    "occurrence": "2023-02-28T11:32:18Z"
+    "expires_at": "2023-03-04",
+    "scanned_at": "2023-02-28T11:32:18Z"
   },
   {
     "GTIN": "COCA COL",
-    "expiry": "2023-03-01",
-    "occurrence": "2023-02-27T11:32:18Z"
+    "expires_at": "2023-03-01",
+    "scanned_at": "2023-02-27T11:32:18Z"
   }
 ]
 EOF
@@ -89,13 +89,13 @@ http https://toogoodtogo-r3qg.onrender.com/api/stock_reading/
 [
   {
     "GTIN": "COCA COL",
-    "expiry": "2023-03-01",
-    "occurrence": "2023-02-27T11:32:18Z"
+    "expires_at": "2023-03-01",
+    "scanned_at": "2023-02-27T11:32:18Z"
   },
   {
     "GTIN": "DANETTE VAN",
-    "expiry": "2023-03-04",
-    "occurrence": "2023-02-28T11:32:18Z"
+    "expires_at": "2023-03-04",
+    "scanned_at": "2023-02-28T11:32:18Z"
   }
 ]
 ```

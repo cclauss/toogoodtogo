@@ -21,8 +21,8 @@ class StockReading(models.Model):
     # longest GTIN seems to be 14
     # https://en.wikipedia.org/wiki/Global_Trade_Item_Number
     GTIN = models.CharField(max_length=14)
-    expiry = models.DateField()
-    occurrence = models.DateTimeField()
+    expires_at = models.DateField()
+    scanned_at = models.DateTimeField()
 
     def __str__(self):
-        return f"{self.GTIN}: {self.expiry} [{self.occurrence}]"
+        return f"{self.GTIN}: {self.expires_at} [{self.scanned_at}]"
