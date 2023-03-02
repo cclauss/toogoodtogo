@@ -69,8 +69,14 @@ http POST -a <username>:<password> https://toogoodtogo-r3qg.onrender.com/api/sto
     scanned_at=2023-02-27T12:00:00Z
 ```
 
-A bulk of stock readings (with conflicting *stock readings*, of course) can be created with the
-following command:
+A bulk of stock readings (with conflicting *stock readings*, of course) can be created in a single
+API call. Since REST doesn't natively support bulk operations, to not break REST purity and not
+disrupt user experience, we follow the convention of using a **dedicated endpoint** for bulk
+operations. Notice the `/batch/` in the URL appended to the resource name. The body of the request
+is a JSON array of *stock readings*. The response is a simple `201 CREATED` but we could imagin
+e returning a `207 MULTI-STATUS` (WEBDAV extensions, see
+[RFC 4918#section-13](https://www.rfc-editor.org/rfc/rfc4918#section-13 for more details)) with a
+JSON array of status for each posted *stock reading*, but 3 days are far too short for this.
 
 ```bash
 http -a <username>:<password> POST https://toogoodtogo-r3qg.onrender.com/api/stock_reading/batch/ << EOF
