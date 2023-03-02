@@ -1,32 +1,39 @@
 FROM python:3.11.1-alpine
 
+# Set environment variables:
+  # production mode
 ENV DJANGO_SETTINGS_MODULE=toogoodtogo.settings.production \
-  PYTHONFAULTHANDLER=1 \
+  # don't buffer stdout and stderr (docker already does this, doing it again will cause double line breaks)
   PYTHONUNBUFFERED=1 \
-  PYTHONHASHSEED=random \
+  # don't create a pip cache (docker build won't use it anyway)
   PIP_NO_CACHE_DIR=off \
+  # don't check for pip updates (we want deterministic and repeatable builds, we use the embeeded pip version)
   PIP_DISABLE_PIP_VERSION_CHECK=on \
-  PIP_DEFAULT_TIMEOUT=100 \
+  # meeeeh, specified in env var mostly for convenience/clarity. Could also be inlined.
   POETRY_VERSION=1.3.2
 
-# System deps:
+# Install Poetry
 RUN pip install "poetry==$POETRY_VERSION"
 
-# Copy only requirements to cache them in docker layer
+# Tell where we will work from now on:
 WORKDIR /code
+
+# Copy only requirements, to avoid full rebuild on every slightest code change:
 COPY poetry.lock pyproject.toml /code/
 
-# Project initialization:
+# Tell Poetry to not create a virtualenv in the container (it's already contained), and install dependencies:
 RUN poetry config virtualenvs.create false \
   && poetry install --with production --no-interaction --no-ansi
 
-# Creating folders, and files for a project:
+# Copy the actual code:
 COPY . /code
 
 # Collect static files
 RUN poetry run python manage.py collectstatic --noinput
 
+# Create a sytem user and run as non-root (your security officer will thank you when you get p0wned):
 RUN addgroup -S toogoodtogo && adduser -D -S -H -G toogoodtogo toogoodtogo
 USER toogoodtogo
 
+# Run the application. We need to bind to 0.0.0.0, 127.0.0.1 will not work when in Docker:
 CMD ["gunicorn", "toogoodtogo.wsgi:application", "--bind", "0.0.0.0:8000"]
