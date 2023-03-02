@@ -183,6 +183,8 @@ like DynamoDB or MongoDB and scale at the database-level horizontally infinitely
 * Enforce validation at the database level. Postgres has a module to enforce International Standard
   Numbers at the database level: the [ISN module](https://www.postgresql.org/docs/current/isn.html).
   I won't teach you that database-level validation is better than application-level validation.
+* use a cron task to delete outdated irrelevant *stock readings* (like the ones that are older than
+  1 month).
 * Buy me a beer, I spent more than 3 days on this (and I learnt django-rest-framework just for this
   project)(also I am now more of a DevOps guy and less of a developer and my django is rusty)(and
   my goldfish died and my dog ate my homework)
