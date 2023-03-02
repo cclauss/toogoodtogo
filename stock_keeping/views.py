@@ -2,7 +2,7 @@ from rest_framework.authentication import BasicAuthentication
 from rest_framework.generics import ListCreateAPIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED
+from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_405_METHOD_NOT_ALLOWED
 
 from .models import StockReading
 from .serializers import StockReadingSerializer
@@ -30,6 +30,9 @@ class StockReadingBatchCreate(StockReadingList):
         return Response(status=HTTP_201_CREATED)
 
     # to not harm auto-discovery and not confuse user
+
+    def get(self, request, *args, **kwargs):
+        return Response(status=HTTP_405_METHOD_NOT_ALLOWED)
     @property
     def allowed_methods(self):
         return ['POST', 'OPTIONS']
