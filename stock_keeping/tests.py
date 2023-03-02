@@ -97,3 +97,20 @@ class StockReadingTest(APITestCase):
         resp4 = client2.get('/api/stock_reading/')
         self.assertEqual(resp4.status_code, 200)
         self.assertEqual(resp4.json(), [data2])
+
+    def test_stock_read_get_list_scanned_at_greater_than(self):
+        StockReading.objects.create(GTIN='YOP CHOCO', expires_at='2022-03-26', scanned_at='2022-02-23 12:00:00Z',
+                                    shop=self.shop)
+        StockReading.objects.create(GTIN='MADELEINE', expires_at='2022-03-27', scanned_at='2022-02-24 12:00:00Z',
+                                    shop=self.shop)
+        StockReading.objects.create(GTIN='COCA ZERO', expires_at='2022-03-28', scanned_at='2022-02-25 12:00:00Z',
+                                    shop=self.shop)
+        StockReading.objects.create(GTIN='DANETTE VAN', expires_at='2022-03-29', scanned_at='2022-02-26 12:00:00Z',
+                                    shop=self.shop)
+
+        resp = self.client.get('/api/stock_reading/?scanned_at__gt=2022-02-24T12:01:00Z')
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.json(), [
+            {'GTIN': 'COCA ZERO', 'expires_at': '2022-03-28', 'scanned_at': '2022-02-25T12:00:00Z'},
+            {'GTIN': 'DANETTE VAN', 'expires_at': '2022-03-29', 'scanned_at': '2022-02-26T12:00:00Z'},
+        ])

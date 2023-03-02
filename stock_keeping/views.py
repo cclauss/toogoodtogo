@@ -14,8 +14,12 @@ class StockReadingList(ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return StockReading.objects.filter(shop=self.request.user.profile.shop)\
+        queryset = StockReading.objects.filter(shop=self.request.user.profile.shop)\
             .order_by('GTIN', '-scanned_at').distinct('GTIN')
+        if self.request.query_params.get('scanned_at__gt'):
+            queryset = queryset.filter(scanned_at__gt=self.request.query_params.get('scanned_at__gt'))
+        return queryset
+
 
 class StockReadingBatchCreate(StockReadingList):
     def post(self, request, *args, **kwargs):

@@ -66,7 +66,7 @@ user:
 http POST -a <username>:<password> https://toogoodtogo-r3qg.onrender.com/api/stock-reading/ \
     gtin=1234567890123 \
     expires_at=2023-03-01 \
-    scanned_at=2023-02-27T11:32:18Z
+    scanned_at=2023-02-27T12:00:00Z
 ```
 
 A bulk of stock readings (with conflicting *stock readings*, of course) can be created with the
@@ -76,44 +76,70 @@ following command:
 http -a <username>:<password> POST https://toogoodtogo-r3qg.onrender.com/api/stock_reading/batch/ << EOF
 [
   {
+    "GTIN": "COCA COL",
+    "expires_at": "2023-03-04",
+    "scanned_at": "2023-02-27T12:00:00Z"
+  },
+  {
     "GTIN": "DANETTE VAN",
     "expires_at": "2023-03-01",
-    "scanned_at": "2023-02-27T11:32:18Z"
+    "scanned_at": "2023-02-27T13:00:00Z"
   },
   {
     "GTIN": "DANETTE VAN",
     "expires_at": "2023-03-04",
-    "scanned_at": "2023-02-28T11:32:18Z"
-  },
-  {
-    "GTIN": "COCA COL",
-    "expires_at": "2023-03-01",
-    "scanned_at": "2023-02-27T11:32:18Z"
+    "scanned_at": "2023-02-27T13:00:00Z"
   }
 ]
 EOF
 ```
 
-Then take a break and contemple all the nice *stock readings* you have created. You have earned it.
+Now take a break and contemple all the nice *stock readings* you've created. Go on, you've earned
+it.
 
 ```bash
-http https://toogoodtogo-r3qg.onrender.com/api/stock_reading/
+http -a <username>:<password> https://toogoodtogo-r3qg.onrender.com/api/stock_reading/
 ```
 
 ```json
 [
   {
     "GTIN": "COCA COL",
-    "expires_at": "2023-03-01",
-    "scanned_at": "2023-02-27T11:32:18Z"
+    "expires_at": "2023-03-04",
+    "scanned_at": "2023-02-27T12:00:00Z"
   },
   {
     "GTIN": "DANETTE VAN",
     "expires_at": "2023-03-04",
-    "scanned_at": "2023-02-28T11:32:18Z"
+    "scanned_at": "2023-02-27T13:00:00Z"
   }
 ]
 ```
+
+OK, you are a mobile scanning device, you already synchronised your stock with the server a while
+ago, you were offline for a while, and now you are back online and needs to sync again. You don't
+need to download the whole stock reading data again, you just need to know what has changed since
+the last time you synced. Use the `scanned_at__gt` query-string argument to filter results and get
+only the *stock readings* that have been created after `scanned_at__gt` (we here currently use the
+django ORM filter syntax purely by convention, but we could easily change it for something more
+user-friendly. The *gt* stands for "*greater than*"):
+
+```bash
+http -a <username>:<password> https://toogoodtogo-r3qg.onrender.com/api/stock_reading/?scanned_at__gt=2023-02-27T12:00:00Z
+```
+
+```json
+[
+  {
+    "GTIN": "DANETTE VAN",
+    "expires_at": "2023-03-01",
+    "scanned_at": "2023-02-27T12:00:00Z"
+  }
+]
+```
+
+Nice and easy, eh? Think of all the ~~money~~ trees we saved by not downloading the whole stock
+reading data again.
 
 ## But wait! GTIN are not actual GTIN!
 
@@ -136,8 +162,6 @@ like DynamoDB or MongoDB and scale at the database-level horizontally infinitely
   on pypi.
 * Once we use proper GTIN, add a `Product` model, with a GTIN and a name. This would allow us to
   still have human-readable names for products and not have to remember the GTIN of each product.
-* add a *date* filtering to the stock reading API, so we don't have to fetch all the stock readings
-  when we sync, we can download only the ones that have been created since the last sync.
 * Create a dedicated `Employee` model, with just an identifier and an access token. All employee do
   not need to be a full-fledged django user with nickname, first name, last name and email address.
   This would ease workload on the database and allow to handle even more load
