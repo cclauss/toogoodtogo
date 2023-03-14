@@ -30,7 +30,7 @@ class StockReadingTest(APITestCase):
         ])
 
     def test_stock_read_post(self):
-        data = {'GTIN': 'YOP CHOCO', 'expires_at': '2022-03-27', 'scanned_at': '2022-02-23 12:55:12Z'}
+        data = {'GTIN': 'YOP CHOCO', 'expires_at': '2022-03-27', 'scanned_at': '2022-02-23T12:55:12Z'}
         resp = self.client.post('/api/stock_reading/', data)
         self.assertEqual(resp.status_code, 201)
         self.assertEqual(StockReading.objects.count(), 1)
