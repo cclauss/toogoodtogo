@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, timezone
 
 from django.contrib.auth.models import User
 from rest_framework.test import APITestCase, APIClient
@@ -36,8 +36,8 @@ class StockReadingTest(APITestCase):
         self.assertEqual(StockReading.objects.count(), 1)
         stock_reading = StockReading.objects.get()
         self.assertEqual(stock_reading.GTIN, data['GTIN'])
-        self.assertEqual(stock_reading.expires_at, date.fromisoformat(data['expires_at']))
-        self.assertEqual(stock_reading.scanned_at, datetime.fromisoformat(data['scanned_at']))
+        self.assertEqual(stock_reading.expires_at, date(2022, 3, 27))
+        self.assertEqual(stock_reading.scanned_at, datetime(2022, 2, 23, 12, 55, 12, tzinfo=timezone.utc))
 
     def test_stock_read_batch_post(self):
         resp = self.client.post('/api/stock_reading/batch/', [
