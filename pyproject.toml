@@ -21,7 +21,7 @@ django-extensions = "^3.2.1"
 
 [tool.poetry.group.production.dependencies]
 gunicorn = "^20.1.0"
-whitenoise = {extras = ["brotli"], version = "^6.4.0"}
+whitenoise = {extras = ["brotli"], version = "^6.5.0"}
 
 [build-system]
 requires = ["poetry-core"]
