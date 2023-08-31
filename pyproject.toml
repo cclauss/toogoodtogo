@@ -11,7 +11,7 @@ Django = {version = "4.2b1", allow-prereleases = true}
 djangorestframework = "^3.14.0"
 dj-database-url = "^1.2.0"
 psycopg2-binary = "^2.9.5"
-django-filter = "^22.1"
+django-filter = "^23.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.1"
