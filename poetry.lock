@@ -150,17 +150,17 @@ Django = ">=3.2"
 
 [[package]]
 name = "django"
-version = "4.2b1"
+version = "4.1.11"
 description = "A high-level Python web framework that encourages rapid development and clean, pragmatic design."
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "Django-4.2b1-py3-none-any.whl", hash = "sha256:9bf13063a882a9b0f7028c4cdc32ea36fe104491cd7720859117990933f9c589"},
-    {file = "Django-4.2b1.tar.gz", hash = "sha256:33e3b3b80924dae3e6d4b5e697eaee724d5a35c1a430df44b1d72c802657992f"},
+    {file = "Django-4.1.11-py3-none-any.whl", hash = "sha256:cac9df0ba87b4f439e1a311ef22f75c938fc874bebf1fbabaed58d0e6d559a25"},
+    {file = "Django-4.1.11.tar.gz", hash = "sha256:7b134688965dd331ca4d11ed38e5ce594caed0e906689a9b95251c29c2c03990"},
 ]
 
 [package.dependencies]
-asgiref = ">=3.6.0"
+asgiref = ">=3.5.2,<4"
 sqlparse = ">=0.2.2"
 tzdata = {version = "*", markers = "sys_platform == \"win32\""}
 
@@ -472,4 +472,4 @@ brotli = ["Brotli"]
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "20a66f1d24f01ab115b7685b33271960bba4e0af075f10f4dbc2a87bfc53f17a"
+content-hash = "8b33599de69b4f42374ec033e5210f87f60aea72e53a14c0dcb283cf77bf09ae"
