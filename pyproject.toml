@@ -14,7 +14,7 @@ psycopg2-binary = "^2.9.9"
 django-filter = "^23.3"
 
 [tool.poetry.group.dev.dependencies]
-pytest = "^7.4.2"
+pytest = "^7.4.3"
 pytest-django = "^4.5.2"
 django-extensions = "^3.2.3"
 
