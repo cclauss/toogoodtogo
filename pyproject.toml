@@ -15,7 +15,7 @@ django-filter = "^23.5"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.0.0"
-pytest-django = "^4.7.0"
+pytest-django = "^4.8.0"
 django-extensions = "^3.2.3"
 
 
